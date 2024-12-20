@@ -52,6 +52,8 @@ mod implementation {
                 largest: count,
             }
         } else {
+            // Need to add a bump of one to every sweet award because the prrevious section
+            // ended at a lower rank.
             assert!(ending_rank > beginning_rank);
             SweetsNeeded {
                 total: (1..=count).map(|x| x + 1).sum(),
