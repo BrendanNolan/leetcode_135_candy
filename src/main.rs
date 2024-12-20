@@ -126,6 +126,26 @@ mod implementation {
         fn test_2() {
             test_forwards_and_backwards(vec![1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 3, 2, 1, 2, 5, 7], 41);
         }
+
+        #[test]
+        fn test_3() {
+            test_forwards_and_backwards(vec![1, 2, 3, 3, 1], 9);
+        }
+
+        #[test]
+        fn test_4() {
+            test_forwards_and_backwards(vec![1, 2, 3, 3, 3, 1], 10);
+        }
+
+        #[test]
+        fn test_5() {
+            test_forwards_and_backwards(vec![3, 2, 1, 1, 3, 1], 10);
+        }
+
+        #[test]
+        fn test_6() {
+            test_forwards_and_backwards(vec![3, 2, 1, 1, 1, 3, 1], 11);
+        }
     }
 }
 
