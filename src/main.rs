@@ -19,7 +19,7 @@ mod implementation {
         if ranks.len() == 1 {
             return true;
         }
-        let last_index = ranks.len();
+        let last_index = ranks.len() - 1;
         if index == 0 {
             ranks[0] < ranks[1]
         } else if index == last_index {
@@ -34,16 +34,29 @@ mod implementation {
         largest: i32,
     }
 
-    // Notice how, sine sections are by definition strictly increasing or strictly decreasing,
-    // you don't even need the ranks here.
     fn calculate_sweets_needed_for_section(
+        ranks: &[i32],
         section_beginning: usize,
         section_end: usize,
     ) -> SweetsNeeded {
         let count = (section_end + 1 - section_beginning) as i32;
-        SweetsNeeded {
-            total: (1..=count).sum(),
-            largest: count,
+        let beginning_rank = ranks[section_beginning];
+        let ending_rank = ranks[section_end];
+        assert_ne!(beginning_rank, ending_rank);
+        if beginning_rank > ending_rank
+            || section_beginning == 0
+            || beginning_rank == ranks[section_beginning - 1]
+        {
+            SweetsNeeded {
+                total: (1..=count).sum(),
+                largest: count,
+            }
+        } else {
+            assert!(ending_rank > beginning_rank);
+            SweetsNeeded {
+                total: (1..=count).map(|x| x + 1).sum(),
+                largest: count + 1,
+            }
         }
     }
 
@@ -65,7 +78,7 @@ mod implementation {
                     != ranks[index].cmp(&ranks[index + 1])
             {
                 let SweetsNeeded { total, largest } =
-                    calculate_sweets_needed_for_section(section_beginning, index);
+                    calculate_sweets_needed_for_section(ranks, section_beginning, index);
                 total_sweets += total;
                 assert!(ranks[section_beginning] != ranks[index]);
                 if ranks[section_beginning] < ranks[index] {
@@ -107,6 +120,11 @@ mod implementation {
         #[test]
         fn test_1() {
             test_forwards_and_backwards(vec![1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 3, 2, 1], 32);
+        }
+
+        #[test]
+        fn test_2() {
+            test_forwards_and_backwards(vec![1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 3, 2, 1, 2, 5, 7], 41);
         }
     }
 }
