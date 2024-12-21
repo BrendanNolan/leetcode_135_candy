@@ -180,6 +180,22 @@ mod implementation {
                 208,
             );
         }
+
+        #[test]
+        fn test_12() {
+            assert_eq!(
+                count_sweets(&[1, 2, 2, 3]),
+                6,
+            );
+        }
+
+        #[test]
+        fn test_13() {
+            assert_eq!(
+                count_sweets(&[1, 2, 3, 3, 2, 1]),
+                12,
+            );
+        }
     }
 }
 
