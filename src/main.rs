@@ -1,3 +1,4 @@
+// There is a wring assumption throughout - that a section must have length > 1 .
 mod implementation {
     use std::cmp;
 
