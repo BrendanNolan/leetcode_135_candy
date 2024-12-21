@@ -43,7 +43,6 @@ mod implementation {
         let count = (section_end + 1 - section_beginning) as i32;
         let beginning_rank = ranks[section_beginning];
         let ending_rank = ranks[section_end];
-        assert_ne!(beginning_rank, ending_rank);
         if beginning_rank > ending_rank
             || section_beginning == 0
             || beginning_rank == ranks[section_beginning - 1]
@@ -53,9 +52,9 @@ mod implementation {
                 largest: count,
             }
         } else {
+            assert!(ending_rank > beginning_rank || section_beginning == section_end);
             // Need to add a bump of one to every sweet award because the prrevious section
             // ended at a lower rank.
-            assert!(ending_rank > beginning_rank);
             SweetsNeeded {
                 total: (1..=count).map(|x| x + 1).sum(),
                 largest: count + 1,
@@ -73,7 +72,7 @@ mod implementation {
                 section_beginning += 1;
                 continue;
             }
-            if index == section_beginning {
+            if index == section_beginning && index != ranks.len() - 1 {
                 continue;
             }
             if index == ranks.len() - 1
@@ -83,7 +82,6 @@ mod implementation {
                 let SweetsNeeded { total, largest } =
                     calculate_sweets_needed_for_section(ranks, section_beginning, index);
                 total_sweets += total;
-                assert!(ranks[section_beginning] != ranks[index]);
                 if ranks[section_beginning] < ranks[index] {
                     if is_peak(ranks, index) {
                         assert!(peak.is_none());
@@ -93,7 +91,6 @@ mod implementation {
                         section_beginning = index + 1;
                     }
                 } else {
-                    assert!(!is_peak(ranks, index));
                     if let Some(last_peak_added) = peak {
                         total_sweets -= cmp::min(last_peak_added, largest);
                         peak = None;
