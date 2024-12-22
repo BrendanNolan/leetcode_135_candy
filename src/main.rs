@@ -73,6 +73,16 @@ mod implementation {
                 continue;
             }
             if index == section_beginning && index != ranks.len() - 1 {
+                if ranks[section_beginning] == ranks[section_beginning + 1] {
+                    if section_beginning == 0
+                        || ranks[section_beginning - 1] == ranks[section_beginning]
+                    {
+                        total_sweets += 1;
+                    } else {
+                        total_sweets += 2;
+                    }
+                    section_beginning += 1;
+                }
                 continue;
             }
             if index == ranks.len() - 1
